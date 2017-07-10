@@ -32,44 +32,28 @@ namespace Microsoft.IdentityModel.Xml
 {
     internal static class CanonicalizationDriver
     {
-        public static MemoryStream GetMemoryStream(XmlTokenStreamReader reader, bool includeComments, string[] inclusivePrefixes)
+        public static MemoryStream GetMemoryStream(XmlTokenStreamReader reader, bool includeComments)
         {
             var stream = new MemoryStream();
-            WriteTo(stream, reader, includeComments, inclusivePrefixes);
+            WriteTo(stream, reader, includeComments);
             stream.Seek(0, SeekOrigin.Begin);
             return stream;
         }
 
-        public static void WriteTo(Stream canonicalStream, XmlTokenStreamReader reader, bool includeComments, string[] inclusivePrefixes)
+        public static void WriteTo(Stream canonicalStream, XmlTokenStreamReader reader, bool includeComments)
         {
-            var writer = XmlDictionaryWriter.CreateTextWriter(Stream.Null);
-            if (inclusivePrefixes != null)
+            using (var writer = XmlDictionaryWriter.CreateTextWriter(Stream.Null))
             {
-                // Add a dummy element at the top and populate the namespace
-                // declaration of all the inclusive prefixes.
-                writer.WriteStartElement("a", reader.LookupNamespace(string.Empty));
-                for (int i = 0; i < inclusivePrefixes.Length; ++i)
-                {
-                    string ns = reader.LookupNamespace(inclusivePrefixes[i]);
-                    if (ns != null)
-                    {
-                        writer.WriteXmlnsAttribute(inclusivePrefixes[i], ns);
-                    }
-                }
-            }
+                writer.StartCanonicalization(canonicalStream, includeComments, null);
+                reader.XmlTokens.WriteTo(writer);
 
-            writer.StartCanonicalization(canonicalStream, includeComments, inclusivePrefixes);
-            reader.XmlTokens.WriteTo(writer);
+                writer.Flush();
+                writer.EndCanonicalization();
 
-            writer.Flush();
-            writer.EndCanonicalization();
-
-            if (inclusivePrefixes != null)
-                writer.WriteEndElement();
 #if DESKTOPNET45
-            // TODO - what to use for net 1.4
-            writer.Close();
+                writer.Close();
 #endif
+            }
         }
     }
 }

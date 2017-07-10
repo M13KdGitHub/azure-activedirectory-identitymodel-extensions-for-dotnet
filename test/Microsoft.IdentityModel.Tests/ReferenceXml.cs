@@ -273,7 +273,7 @@ namespace Microsoft.IdentityModel.Tests
             }
         }
 
-        public static KeyInfoTestSet KeyInfoWrongNameSpace
+        public static KeyInfoTestSet KeyInfoWrongNamespace
         {
             get
             {
@@ -560,6 +560,10 @@ namespace Microsoft.IdentityModel.Tests
                 };
             }
         }
+        #endregion
+
+        #region Reference
+
         #endregion
 
         #region Saml
@@ -1602,6 +1606,18 @@ namespace Microsoft.IdentityModel.Tests
         #endregion
 
         #region Signature
+
+        public static SignatureTestSet DefaultSignature
+        {
+            get
+            {
+                return new SignatureTestSet
+                {
+                    Signature = Default.Signature,
+                    Xml = XmlGenerator.Generate(Default.Signature)
+                };
+            }
+        }
 
         public static SignatureTestSet Signature_UnknownDigestAlgorithm
         {
