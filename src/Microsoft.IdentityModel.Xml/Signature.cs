@@ -41,7 +41,6 @@ namespace Microsoft.IdentityModel.Xml
     {
         private string _prefix = XmlSignatureConstants.Prefix;
 
-        // TODO - consider constructor without SignedInfo
         public Signature()
         {
         }

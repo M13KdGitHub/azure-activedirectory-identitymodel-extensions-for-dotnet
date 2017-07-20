@@ -30,12 +30,13 @@ using System.Security.Cryptography;
 using System.Xml;
 using Microsoft.IdentityModel.Tokens;
 using static Microsoft.IdentityModel.Logging.LogHelper;
+using static Microsoft.IdentityModel.Xml.XmlSignatureConstants;
 
 namespace Microsoft.IdentityModel.Xml
 {
     internal class TransformChain
     {
-        private string _prefix = XmlSignatureConstants.Prefix;
+        private string _prefix = Prefix;
 
         public TransformChain()
         {
@@ -62,44 +63,28 @@ namespace Microsoft.IdentityModel.Xml
             get { return Transforms[index]; }
         }
 
-        public bool NeedsInclusiveContext
-        {
-            get
-            {
-                for (int i = 0; i < Count; i++)
-                    if (this[i].NeedsInclusiveContext)
-                        return true;
-
-                return false;
-            }
-        }
-
-        public virtual void ReadFrom(XmlReader reader, bool preserveComments)
+        public virtual void ReadFrom(XmlReader reader)
         {
             // <Transforms>
-            XmlUtil.CheckReaderOnEntry(reader, XmlSignatureConstants.Elements.Transforms, XmlSignatureConstants.Namespace);
+            XmlUtil.CheckReaderOnEntry(reader, Elements.Transforms, Namespace);
 
             _prefix = reader.Prefix;
             reader.Read();
 
-            XmlUtil.CheckReaderOnEntry(reader, XmlSignatureConstants.Elements.Transform, XmlSignatureConstants.Namespace);
-            while (reader.IsStartElement(XmlSignatureConstants.Elements.Transform, XmlSignatureConstants.Namespace))
+            XmlUtil.CheckReaderOnEntry(reader, Elements.Transform, Namespace);
+            while (reader.IsStartElement(Elements.Transform, Namespace))
             {
-                string transformAlgorithmUri = reader.GetAttribute(XmlSignatureConstants.Attributes.Algorithm, null);
-                var transform = CreateTransform(transformAlgorithmUri);
-                transform.ReadFrom(reader, preserveComments);
+                var transform = CreateTransform(reader.GetAttribute(Attributes.Algorithm, null));
+                transform.ReadFrom(reader);
                 Transforms.Add(transform);
             }
 
             // </ Transforms>
             reader.MoveToContent();
             reader.ReadEndElement();
-
-            if (Count == 0)
-                throw XmlUtil.LogReadException(LogMessages.IDX21014);
         }
 
-        public Transform CreateTransform(string transform)
+        public virtual Transform CreateTransform(string transform)
         {
             if (string.IsNullOrEmpty(transform))
                 LogArgumentNullException(nameof(transform));
@@ -127,7 +112,7 @@ namespace Microsoft.IdentityModel.Xml
             if (writer == null)
                 LogArgumentNullException(nameof(writer));
 
-            writer.WriteStartElement(_prefix, XmlSignatureConstants.Elements.Transforms, XmlSignatureConstants.Namespace);
+            writer.WriteStartElement(_prefix, Elements.Transforms, Namespace);
             for (int i = 0; i < Count; i++)
                 this[i].WriteTo(writer);
 

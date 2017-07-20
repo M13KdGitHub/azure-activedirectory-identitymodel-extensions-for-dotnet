@@ -78,36 +78,6 @@ namespace Microsoft.IdentityModel.Xml
             return Verified;
         }
 
-        /// <summary>
-        /// We look at the URI reference to decide if we should preserve comments while canonicalization.
-        /// Only when the reference is xpointer(/) or xpointer(id(SomeId)) do we preserve comments during canonicalization 
-        /// of the reference element for computing the digest.
-        /// </summary>
-        /// <param name="uri">The Uri reference </param>
-        /// <returns>true if comments should be preserved.</returns>
-        private static bool ShouldPreserveComments(string uri)
-        {
-            bool preserveComments = false;
-
-            if (!string.IsNullOrEmpty(uri))
-            {
-                //removes the hash
-                string idref = uri.Substring(1);
-
-                if (idref == "xpointer(/)")
-                {
-                    preserveComments = true;
-                }
-                else if (idref.StartsWith("xpointer(id(", StringComparison.Ordinal) && (idref.IndexOf(")", StringComparison.Ordinal) > 0))
-                {
-                    // Dealing with XPointer of type #xpointer(id("ID")). Other XPointer support isn't handled here and is anyway optional 
-                    preserveComments = true;
-                }
-            }
-
-            return preserveComments;
-        }
-
         // TODO - hook this up to write
         internal void ComputeAndSetDigest()
         {
@@ -156,13 +126,12 @@ namespace Microsoft.IdentityModel.Xml
 
             reader.Read();
 
+            // <Transforms> - Optional
             if (reader.IsStartElement(XmlSignatureConstants.Elements.Transforms, XmlSignatureConstants.Namespace))
-                TransformChain.ReadFrom(reader, ShouldPreserveComments(Uri));
-            else
-                throw XmlUtil.LogReadException(LogMessages.IDX21011, XmlSignatureConstants.Namespace, XmlSignatureConstants.Elements.Transforms, reader.NamespaceURI, reader.LocalName);
+                TransformChain.ReadFrom(reader);
 
 
-            // <DigestMethod>
+            // <DigestMethod> - required
             XmlUtil.CheckReaderOnEntry(reader, XmlSignatureConstants.Elements.DigestMethod, XmlSignatureConstants.Namespace);
             bool isEmptyElement = reader.IsEmptyElement;
             DigestMethod = reader.GetAttribute(XmlSignatureConstants.Attributes.Algorithm, null);
@@ -183,7 +152,7 @@ namespace Microsoft.IdentityModel.Xml
             if (string.IsNullOrEmpty(DigestValue))
                 throw XmlUtil.LogReadException(LogMessages.IDX21206, Id);
 
-            DigestBytes = System.Convert.FromBase64String(DigestValue);
+            DigestBytes = Convert.FromBase64String(DigestValue);
 
             // </Reference>
             reader.MoveToContent();

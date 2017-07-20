@@ -34,16 +34,11 @@ namespace Microsoft.IdentityModel.Xml
     {
         public string Algorithm { get; protected set; }
 
-        public virtual bool NeedsInclusiveContext
-        {
-            get { return false; }
-        }
-
-        public abstract object Process(XmlTokenStreamReader input);
+        public abstract XmlTokenStreamReader Process(XmlTokenStreamReader input);
 
         public abstract byte[] ProcessAndDigest(XmlTokenStreamReader input, HashAlgorithm hash);
 
-        public abstract void ReadFrom(XmlReader reader, bool preserveComments);
+        public abstract void ReadFrom(XmlReader reader);
 
         public abstract void WriteTo(XmlWriter writer);
     }

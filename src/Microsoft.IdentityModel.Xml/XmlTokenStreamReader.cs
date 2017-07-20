@@ -265,7 +265,7 @@ namespace Microsoft.IdentityModel.Xml
                 }
                 default:
                 {
-                    throw LogExceptionMessage(new XmlException(LogMessages.IDX21023));
+                    throw LogExceptionMessage(new XmlException(FormatInvariant(LogMessages.IDX21023, InnerReader.NodeType)));
                 }
             }
         }

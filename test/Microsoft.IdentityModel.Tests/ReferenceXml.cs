@@ -1685,9 +1685,18 @@ namespace Microsoft.IdentityModel.Tests
         {
             get
             {
+                var signedInfo = Default.SignedInfo;
+                signedInfo.Reference = new Reference
+                {
+                    DigestBytes = Default.ReferenceDigestBytes,
+                    DigestMethod = SecurityAlgorithms.Sha256Digest,
+                    DigestValue = Default.ReferenceDigestValue
+                };
+
                 return new SignedInfoTestSet
                 {
-                    Xml = XmlGenerator.Generate(Default.SignedInfo).Replace("Transforms", "_Transforms")
+                    SignedInfo = signedInfo,
+                    Xml = XmlGenerator.Generate(signedInfo)
                 };
             }
         }
@@ -1696,9 +1705,18 @@ namespace Microsoft.IdentityModel.Tests
         {
             get
             {
+                var signedInfo = Default.SignedInfo;
+                signedInfo.Reference = new Reference
+                {
+                    DigestBytes = Default.ReferenceDigestBytes,
+                    DigestMethod = SecurityAlgorithms.Sha256Digest,
+                    DigestValue = Default.ReferenceDigestValue
+                };
+
                 return new SignedInfoTestSet
                 {
-                    Xml = XmlGenerator.Generate(Default.SignedInfo).Replace("Transform", "_Transform")
+                    SignedInfo = signedInfo,
+                    Xml = XmlGenerator.Generate(signedInfo)
                 };
             }
         }

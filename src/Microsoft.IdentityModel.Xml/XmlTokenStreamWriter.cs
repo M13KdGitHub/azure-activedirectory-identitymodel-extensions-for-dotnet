@@ -39,13 +39,11 @@ namespace Microsoft.IdentityModel.Xml
 
         public XmlTokenStreamWriter(IList<XmlTokenEntry> entries,
                                      string excludedElement,
-                                     int? excludedElementDepth,
                                      string excludedElementNamespace)
         {
             _entries = entries ?? throw LogArgumentNullException(nameof(entries));
             Count = entries.Count;
             ExcludedElement = excludedElement;
-            ExcludedElementDepth = excludedElementDepth;
             ExcludedElementNamespace = excludedElementNamespace;
         }
 
@@ -95,11 +93,6 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         public string ExcludedElementNamespace
-        {
-            get;
-        }
-
-        public int? ExcludedElementDepth
         {
             get;
         }
@@ -165,7 +158,6 @@ namespace Microsoft.IdentityModel.Xml
                         bool isEmpty = IsEmptyElement;
                         depth++;
                         if (include
-                            && (ExcludedElementDepth == null || ExcludedElementDepth == (depth - 1))
                             && LocalName == ExcludedElement
                             && NamespaceUri == ExcludedElementNamespace)
                         {

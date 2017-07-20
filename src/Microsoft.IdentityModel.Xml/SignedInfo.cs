@@ -195,7 +195,7 @@ namespace Microsoft.IdentityModel.Xml
                 Id = canonicalizingReader.GetAttribute(XmlSignatureConstants.Attributes.Id, null);
                 // read <SignedInfo ...> start element
                 canonicalizingReader.Read();
-                _exclusiveCanonicalizationTransform.ReadFrom(canonicalizingReader, false);
+                _exclusiveCanonicalizationTransform.ReadFrom(canonicalizingReader);
                 ReadSignatureMethod(canonicalizingReader);
 
                 XmlUtil.CheckReaderOnEntry(canonicalizingReader, XmlSignatureConstants.Elements.Reference, XmlSignatureConstants.Namespace);

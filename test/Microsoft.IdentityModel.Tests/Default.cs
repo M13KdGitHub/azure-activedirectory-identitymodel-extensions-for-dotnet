@@ -330,7 +330,7 @@ namespace Microsoft.IdentityModel.Tests
             get => _referenceDigestBytes.CloneByteArray();
         }
 
-        public static string ReferenceDigestText
+        public static string ReferenceDigestValue
         {
             get => _referenceDigestValue;
         }

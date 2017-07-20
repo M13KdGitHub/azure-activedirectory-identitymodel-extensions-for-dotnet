@@ -35,7 +35,6 @@ namespace Microsoft.IdentityModel.Xml
     {
         private List<XmlTokenEntry> _entries = new List<XmlTokenEntry>();
         private string _excludedElement;
-        private int? _excludedElementDepth;
         private string _excludedElementNamespace;
 
         public XmlTokenStream()
@@ -59,19 +58,13 @@ namespace Microsoft.IdentityModel.Xml
 
         public void SetElementExclusion(string excludedElement, string excludedElementNamespace)
         {
-            SetElementExclusion(excludedElement, excludedElementNamespace, null);
-        }
-
-        public void SetElementExclusion(string excludedElement, string excludedElementNamespace, int? excludedElementDepth)
-        {
             _excludedElement = excludedElement;
-            _excludedElementDepth = excludedElementDepth;
             _excludedElementNamespace = excludedElementNamespace;
         }
 
         public void WriteTo(XmlDictionaryWriter writer)
         {
-            var streamWriter = new XmlTokenStreamWriter(_entries, _excludedElement, _excludedElementDepth, _excludedElementNamespace);
+            var streamWriter = new XmlTokenStreamWriter(_entries, _excludedElement, _excludedElementNamespace);
             streamWriter.WriteTo(writer);
         }
     }

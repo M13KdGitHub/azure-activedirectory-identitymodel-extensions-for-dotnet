@@ -25,7 +25,6 @@
 //
 //------------------------------------------------------------------------------
 
-using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml;
@@ -65,13 +64,12 @@ namespace Microsoft.IdentityModel.Xml
             private set;
         }
 
-        // multi-transform case, inefficient path
-        public override object Process(XmlTokenStreamReader reader)
+        public override XmlTokenStreamReader Process(XmlTokenStreamReader reader)
         {
             if (reader == null)
                 throw LogArgumentNullException(nameof(reader));
 
-            return CanonicalizationDriver.GetMemoryStream(reader, IncludeComments);
+            throw XmlUtil.LogReadException(LogMessages.IDX21106);
         }
 
         public override byte[] ProcessAndDigest(XmlTokenStreamReader reader, HashAlgorithm hash)
@@ -107,7 +105,7 @@ namespace Microsoft.IdentityModel.Xml
 #endif
         }
 
-        public override void ReadFrom(XmlReader reader, bool preserveComments)
+        public override void ReadFrom(XmlReader reader)
         {
             XmlUtil.CheckReaderOnEntry(reader, _elementName, XmlSignatureConstants.Namespace);
 
@@ -118,7 +116,7 @@ namespace Microsoft.IdentityModel.Xml
                 throw XmlUtil.LogReadException(LogMessages.IDX21013, XmlSignatureConstants.Elements.Signature, XmlSignatureConstants.Attributes.Algorithm);
 
             if (Algorithm == XmlSignatureConstants.ExclusiveC14nWithComments)
-                IncludeComments = preserveComments && true;
+                IncludeComments = true;
             else if (Algorithm == XmlSignatureConstants.ExclusiveC14n)
                 IncludeComments = false;
             else

@@ -25,54 +25,69 @@
 //
 //------------------------------------------------------------------------------
 
-using System;
 using System.Security.Cryptography;
 using System.Xml;
 using static Microsoft.IdentityModel.Logging.LogHelper;
+using static Microsoft.IdentityModel.Xml.XmlSignatureConstants;
+using static Microsoft.IdentityModel.Xml.XmlUtil;
 
 namespace Microsoft.IdentityModel.Xml
 {
     public sealed class EnvelopedSignatureTransform : Transform
     {
-        private string _prefix = XmlSignatureConstants.Prefix;
+        private string _prefix = Prefix;
 
+        /// <summary>
+        /// Creates an EnvelopedSignatureTransform
+        /// </summary>
         public EnvelopedSignatureTransform()
         {
-            Algorithm = XmlSignatureConstants.Algorithms.EnvelopedSignature;
+            Algorithm = Algorithms.EnvelopedSignature;
         }
 
-        public override object Process(XmlTokenStreamReader reader)
+        /// <summary>
+        /// Sets the reader to exclude the &lt;Signature> element
+        /// </summary>
+        /// <param name="reader"><see cref="XmlTokenStreamReader"/>to set.</param>
+        /// <returns><see cref="XmlTokenStreamReader"/>with exclusion set.</returns>
+        public override XmlTokenStreamReader Process(XmlTokenStreamReader reader)
         {
             if (reader == null)
                 LogArgumentNullException(nameof(reader));
 
-            // The Enveloped Signature Transform removes the Signature element from the canonicalized octets
-            // Specifying '1' as the depth, we narrow our range of support so that we require
-            // the signature be a direct child of the element being signed.
-            reader.XmlTokens.SetElementExclusion(XmlSignatureConstants.Elements.Signature, XmlSignatureConstants.Namespace, 1);
+            reader.XmlTokens.SetElementExclusion(Elements.Signature, Namespace);
             return reader;
         }
 
-        // this transform is not allowed as the last one in a chain
+        /// <summary>
+        /// Not supported for EnvelopeSignatureTransform
+        /// </summary>
+        /// <param name="reader">not applicable</param>
+        /// <param name="hash">not applicable</param>
+        /// <returns></returns>
         public override byte[] ProcessAndDigest(XmlTokenStreamReader reader, HashAlgorithm hash)
         {
-            throw LogExceptionMessage(new NotSupportedException("UnsupportedLastTransform"));
+            throw LogReadException(LogMessages.IDX21104);
         }
 
-        public override void ReadFrom(XmlReader reader, bool preserveComments)
+        /// <summary>
+        /// Reads and populates a <see cref="EnvelopedSignatureTransform"/> from XML
+        /// </summary>
+        /// <param name="reader"><see cref="XmlReader"/>positioned at a TransForm element.</param>
+        public override void ReadFrom(XmlReader reader)
         {
             reader.MoveToContent();
             string algorithm = XmlUtil.ReadEmptyElementAndRequiredAttribute(reader,
-                XmlSignatureConstants.Elements.Transform, XmlSignatureConstants.Namespace, XmlSignatureConstants.Attributes.Algorithm, out _prefix);
+                Elements.Transform, Namespace, Attributes.Algorithm, out _prefix);
 
             if (algorithm != Algorithm)
-                throw LogExceptionMessage(new CryptographicException("AlgorithmMismatchForTransform"));
+                throw LogReadException(LogMessages.IDX21105, Algorithm, algorithm);
         }
 
         public override void WriteTo(XmlWriter writer)
         {
-            writer.WriteStartElement(_prefix, XmlSignatureConstants.Elements.Transform, XmlSignatureConstants.Namespace);
-            writer.WriteAttributeString(XmlSignatureConstants.Attributes.Algorithm, null, Algorithm);
+            writer.WriteStartElement(_prefix, Elements.Transform, Namespace);
+            writer.WriteAttributeString(Attributes.Algorithm, null, Algorithm);
             writer.WriteEndElement();
         }
     }
