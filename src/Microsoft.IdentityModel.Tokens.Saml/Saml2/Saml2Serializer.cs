@@ -153,11 +153,11 @@ namespace Microsoft.IdentityModel.Tokens.Saml2
         /// </summary>
         /// <param name="reader">A <see cref="XmlReader"/> positioned at a <see cref="Saml2Assertion"/> element.</param>
         /// <returns>A <see cref="Saml2Assertion"/> instance.</returns>
-        public virtual Saml2Assertion ReadAssertion(XmlDictionaryReader reader)
+        public virtual Saml2Assertion ReadAssertion(XmlReader reader)
         {
             XmlUtil.CheckReaderOnEntry(reader, Saml2Constants.Elements.Assertion, Saml2Constants.Namespace);
 
-            var envelopeReader = new EnvelopedSignatureReader(XmlDictionaryReader.CreateDictionaryReader(reader));
+            var envelopeReader = new EnvelopedSignatureReader(reader);
             var assertion = new Saml2Assertion(new Saml2NameIdentifier("__TemporaryIssuer__"));
 
             // TODO - handle EncryptedAssertions

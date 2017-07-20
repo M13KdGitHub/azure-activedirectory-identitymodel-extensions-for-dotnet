@@ -50,7 +50,7 @@ namespace Microsoft.IdentityModel.Xml
                 writer.Flush();
                 writer.EndCanonicalization();
 
-#if DESKTOPNET45
+#if DESKTOPNET45 || DESKTOPNET451
                 writer.Close();
 #endif
             }

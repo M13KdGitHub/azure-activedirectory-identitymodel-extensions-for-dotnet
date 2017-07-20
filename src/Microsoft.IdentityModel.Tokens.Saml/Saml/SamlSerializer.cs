@@ -56,8 +56,7 @@ namespace Microsoft.IdentityModel.Tokens.Saml
         /// <returns>True if the URI is valid, false otherwise.</returns>
         internal static bool CanCreateValidUri(string uriString, UriKind uriKind)
         {
-            Uri tempUri;
-            return Uri.TryCreate(uriString, uriKind, out tempUri);
+            return Uri.TryCreate(uriString, uriKind, out Uri tempUri);
         }
 
         internal static bool IsAssertionIdValid(string assertionId)
@@ -181,7 +180,7 @@ namespace Microsoft.IdentityModel.Tokens.Saml
         /// </summary>
         /// <param name="reader">A <see cref="XmlReader"/> positioned at a <see cref="SamlAssertion"/> element.</param>
         /// <returns>A <see cref="SamlAssertion"/> instance.</returns>
-        public virtual SamlAssertion ReadAssertion(XmlDictionaryReader reader)
+        public virtual SamlAssertion ReadAssertion(XmlReader reader)
         {
             XmlUtil.CheckReaderOnEntry(reader, SamlConstants.Elements.Assertion, SamlConstants.Namespace);
 

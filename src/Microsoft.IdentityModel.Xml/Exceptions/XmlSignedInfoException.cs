@@ -34,7 +34,7 @@ namespace Microsoft.IdentityModel.Xml
 #endif
 
     /// <summary>
-    /// Represents a security token exception.
+    /// This exception is thrown when a problem occurs processing the &lt;SignedInfo> element.
     /// </summary>
     public class XmlSignedInfoException : XmlException
     {

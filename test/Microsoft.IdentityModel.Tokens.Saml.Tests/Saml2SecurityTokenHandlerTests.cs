@@ -243,6 +243,19 @@ namespace Microsoft.IdentityModel.Tokens.Saml.Tests
                 {
                     new SamlTheoryData
                     {
+                        Handler = new Saml2SecurityTokenHandler(),
+                        TestId = nameof(RefrenceTokens.Saml2Token_Valid),
+                        Token = RefrenceTokens.Saml2Token_Valid,
+                        ValidationParameters = new TokenValidationParameters
+                        {
+                            IssuerSigningKey = ReferenceXml.DefaultAADSigningKey,
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
+                            ValidateLifetime = false,
+                        }
+                    },
+                    new SamlTheoryData
+                    {
                         ExpectedException = ExpectedException.ArgumentNullException("IDX10000:"),
                         First = true,
                         Handler = new Saml2SecurityTokenHandler(),
@@ -294,16 +307,16 @@ namespace Microsoft.IdentityModel.Tokens.Saml.Tests
                     {
                         ExpectedException = new ExpectedException(typeof(Saml2SecurityTokenReadException), "IDX11106:"),
                         Handler = new Saml2SecurityTokenHandler(),
-                        TestId = nameof(RefrenceTokens.Saml2Token_IssuerInstantMissing),
-                        Token = RefrenceTokens.Saml2Token_IssuerInstantMissing,
+                        TestId = nameof(RefrenceTokens.Saml2Token_IssueInstantMissing),
+                        Token = RefrenceTokens.Saml2Token_IssueInstantMissing,
                         ValidationParameters = new TokenValidationParameters(),
                     },
                     new SamlTheoryData
                     {
                         ExpectedException = new ExpectedException(typeof(Saml2SecurityTokenReadException), "IDX11102:", typeof(FormatException)),
                         Handler = new Saml2SecurityTokenHandler(),
-                        TestId = nameof(RefrenceTokens.Saml2Token_IssuerInstantFormatError),
-                        Token = RefrenceTokens.Saml2Token_IssuerInstantFormatError,
+                        TestId = nameof(RefrenceTokens.Saml2Token_IssueInstantFormatError),
+                        Token = RefrenceTokens.Saml2Token_IssueInstantFormatError,
                         ValidationParameters = new TokenValidationParameters(),
                     },
                     new SamlTheoryData

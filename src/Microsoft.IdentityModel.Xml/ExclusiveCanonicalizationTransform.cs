@@ -101,7 +101,7 @@ namespace Microsoft.IdentityModel.Xml
             writer.Flush();
             writer.EndCanonicalization();
 
-            #if DESKTOPNET45
+#if DESKTOPNET45 || DESKTOPNET451
             // TODO - what to use for net 1.4
             writer.Close();
 #endif

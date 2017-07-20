@@ -33,7 +33,7 @@ using static Microsoft.IdentityModel.Logging.LogHelper;
 namespace Microsoft.IdentityModel.Xml
 {
     /// <summary>
-    /// Represents the &lt;Reference> element in a &lt;SignedInfo> clause.
+    /// Represents the &lt;Reference> element in a &lt;SignedInfo> element.
     /// </summary>
     public class Reference
     {

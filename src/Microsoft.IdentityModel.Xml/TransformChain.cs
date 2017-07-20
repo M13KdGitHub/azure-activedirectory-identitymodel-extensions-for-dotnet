@@ -99,7 +99,7 @@ namespace Microsoft.IdentityModel.Xml
                 throw XmlUtil.LogReadException(LogMessages.IDX21014);
         }
 
-        internal Transform CreateTransform(string transform)
+        public Transform CreateTransform(string transform)
         {
             if (string.IsNullOrEmpty(transform))
                 LogArgumentNullException(nameof(transform));
@@ -114,7 +114,7 @@ namespace Microsoft.IdentityModel.Xml
             throw LogExceptionMessage(new XmlException(FormatInvariant(LogMessages.IDX21018, transform)));
         }
 
-        internal byte[] TransformToDigest(XmlTokenStreamReader tokenStreamReader, HashAlgorithm hash)
+        public byte[] TransformToDigest(XmlTokenStreamReader tokenStreamReader, HashAlgorithm hash)
         {
             for (int i = 0; i < Count - 1; i++)
                 tokenStreamReader = this[i].Process(tokenStreamReader) as XmlTokenStreamReader;

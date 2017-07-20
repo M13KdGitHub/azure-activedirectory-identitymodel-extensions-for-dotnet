@@ -41,7 +41,7 @@ namespace Microsoft.IdentityModel.Xml
         private XmlDictionaryReader _innerReader;
 
         /// <summary>
-        /// Gets the wrapped inner reader.
+        /// Gets or sets the Inner <see cref="XmlDictionaryReader"/>.
         /// </summary>
         protected XmlDictionaryReader InnerReader
         {
@@ -50,7 +50,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the value of the attribute with the specified index.
+        /// Gets the value of the InnerReaders's attribute with the specified index.
         /// </summary>
         /// <param name="i">index of the attribute.</param>
         /// <returns>Attribute value at the specified index.</returns>
@@ -60,7 +60,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the value of the attribute with the specified System.Xml.XmlReader.Name.
+        /// Gets the value of the InnerReaders's attribute with the specified Name.
         /// </summary>
         /// <param name="name">The qualified name of the attribute.</param>
         /// <returns>The value of the specified attribute. If the attribute is not found, 
@@ -71,8 +71,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the value of the attribute with the specified System.Xml.XmlReader.LocalName and 
-        /// System.Xml.XmlReader.NamespaceURI from the wrapped reader.
+        /// Gets the value of the InnerReaders's attribute with the specified LocalName and NamespaceURI.
         /// </summary>
         /// <param name="name">The local name of the attribute.</param>
         /// <param name="ns">The namespace URI of the attribute.</param>
@@ -84,7 +83,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the number of Attributes at the current reader position.
+        /// Gets the number of InnerReaders's attributes at the current reader position.
         /// </summary>
         public override int AttributeCount
         {
@@ -92,25 +91,31 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the base Uri of the current node.
+        /// Gets the InnerReaders's base Uri of the current node.
         /// </summary>
         public override string BaseURI
         {
             get { return _innerReader.BaseURI; }
         }
 
+        /// <summary>
+        /// Gets a bool indicating if the InnerReader can read binary content
+        /// </summary>
         public override bool CanReadBinaryContent
         {
             get { return _innerReader.CanReadBinaryContent; }
         }
 
+        /// <summary>
+        /// Gets a bool indicating if the InnerReader can read value chunk.
+        /// </summary>
         public override bool CanReadValueChunk
         {
             get { return _innerReader.CanReadValueChunk; }
         }
 
         /// <summary>
-        /// Gets the Depth of the current node.
+        /// Gets the  InnerReaders's Depth of the current node.
         /// </summary>
         public override int Depth
         {
@@ -118,7 +123,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets a value indicating if reader is positioned at the end of the stream.
+        /// Gets a bool indicating if the InnerReader is positioned at the end of the stream.
         /// </summary>
         public override bool EOF
         {
@@ -126,8 +131,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets a value indicating if the current node can have a 
-        /// System.Xml.XmlReader.Value.
+        /// Gets a bool indicating if the InnerReader current node has a Value.
         /// </summary>
         public override bool HasValue
         {
@@ -135,7 +139,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets a value indicating if the current node is an attribute that
+        /// Gets a bool indicating if the InnerReader's current node is an attribute that
         /// was generated from the default value defined in the DTD or Schema.
         /// </summary>
         public override bool IsDefault
@@ -144,13 +148,17 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets a value indicating if the current node.
+        /// Gets a bool indicating if the InnerReader's current node is empty.
         /// </summary>
         public override bool IsEmptyElement
         {
             get { return _innerReader.IsEmptyElement; }
         }
 
+        /// <summary>
+        /// Gets the InnerReader's LineNumber
+        /// </summary>
+        /// <remarks>If the InnerReader does not support <see cref="IXmlLineInfo"/> 1 is returned.</remarks>
         public int LineNumber
         {
             get
@@ -163,6 +171,10 @@ namespace Microsoft.IdentityModel.Xml
             }
         }
 
+        /// <summary>
+        /// Gets the InnerReader's LinePosition.
+        /// </summary>
+        /// <remarks>If the InnerReader does not support <see cref="IXmlLineInfo"/> 1 is returned.</remarks>
         public int LinePosition
         {
             get
@@ -176,7 +188,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the local name of the current node.
+        /// Gets the InnerReader's LocalName of the current node.
         /// </summary>
         public override string LocalName
         {
@@ -184,7 +196,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the qualified name of the current node.
+        /// Gets the InnerReader's Name of the current node.
         /// </summary>
         public override string Name
         {
@@ -192,7 +204,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the namespace URI of the current node.
+        /// Gets the InnerReader's NamespaceURI of the current node.
         /// </summary>
         public override string NamespaceURI
         {
@@ -200,7 +212,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the System.Xml.XmlNameTable associated with this instance.
+        /// Gets the InnerReader's XmlNameTable at the current node.
         /// </summary>
         public override XmlNameTable NameTable
         {
@@ -208,7 +220,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the type of the current node.
+        /// Gets the type of the InnerReader's current node type.
         /// </summary>
         public override XmlNodeType NodeType
         {
@@ -216,7 +228,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the prefix of the current node.
+        /// Gets the prefix of the InnerReader's current node.
         /// </summary>
         public override string Prefix
         {
@@ -234,7 +246,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 #endif
         /// <summary>
-        /// Gets the System.Xml.ReadState of the reader. 
+        /// Gets the InnerReader's ReadState. 
         /// </summary>
         public override ReadState ReadState
         {
@@ -242,7 +254,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the text value of the current node.
+        /// Gets the Value of the InnerReader's current node.
         /// </summary>
         public override string Value
         {
@@ -250,7 +262,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the Common Language Runtime (CLR) type of the curent node.
+        /// Gets the ValueType of InnerReader's curent node.
         /// </summary>
         public override Type ValueType
         {
@@ -258,7 +270,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the xml:lang scope.
+        /// Gets the InnerReader's XmlLang.
         /// </summary>
         public override string XmlLang
         {
@@ -266,8 +278,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the current xml:space scope. If no xml:space scope exists, this property 
-        /// defaults to XmlSpace.None.
+        /// Gets the InnerReader's XmlSpace.
         /// </summary>
         public override XmlSpace XmlSpace
         {
@@ -286,7 +297,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 #endif
         /// <summary>
-        /// Gets the value of the attribute at the given index.
+        /// Gets the value of the InnerReader's attribute at the given index.
         /// </summary>
         /// <param name="i">The index of the attribute. The index is 0 based index.</param>
         /// <returns>The value of the attribute at the specified index.</returns>
@@ -297,7 +308,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the value of the attribute with the given name.
+        /// Gets the value of the InnerReader's attribute with the given name.
         /// </summary>
         /// <param name="name">The qualified name of the attribute.</param>
         /// <returns>The value of the attribute. If the attribute is not found null
@@ -309,7 +320,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Gets the value of the attribute with the given name and namespace Uri.
+        /// Gets the value of the InnerReader's attribute with the given name and namespace Uri.
         /// </summary>
         /// <param name="name">The local name of the attribute.</param>
         /// <param name="ns">The namespace of the attribute.</param>
@@ -321,6 +332,9 @@ namespace Microsoft.IdentityModel.Xml
             return _innerReader.GetAttribute(name, ns);
         }
 
+        /// <summary>
+        /// Gets a bool indicating if the InnerReader HasLineInfo
+        /// </summary>
         public bool HasLineInfo()
         {
             var lineInfo = _innerReader as IXmlLineInfo;
@@ -332,7 +346,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Resolves a namespace prefix in the current element scope.
+        /// Resolves hte InnerReader's namespace prefix in the current element scope.
         /// </summary>
         /// <param name="prefix">Prefix whose namespace Uri to be resolved.</param>
         /// <returns>The namespace Uri to which the prefix matches or null if no matching
@@ -343,7 +357,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Moves to the attribute with the specified index.
+        /// Moves to the InnerReader's attribute with the specified index.
         /// </summary>
         /// <param name="index">The index of the attribute.</param>
         public override void MoveToAttribute(int index)
@@ -352,7 +366,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Moves to the attribute with the given local name.
+        /// Moves to the InnerReader's attribute with the given local name.
         /// </summary>
         /// <param name="name">The qualified name of the attribute.</param>
         /// <returns>true if the attribute is found; otherwise, false.</returns>
@@ -362,8 +376,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Moves to the attribute with the specified System.Xml.XmlReader.LocalName and 
-        /// System.Xml.XmlReader.NamespaceURI.
+        /// Moves to the InnerReader's attribute with the specified LocalName and NamespaceURI.
         /// </summary>
         /// <param name="name">The local name of the attribute.</param>
         /// <param name="ns">The namespace URI of the attribute.</param>
@@ -374,7 +387,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Moves to a node of type Element.
+        /// Moves the InnerReader to a node of type Element.
         /// </summary>
         /// <returns>true if the reader is positioned on an element else false</returns>
         public override bool MoveToElement()
@@ -383,7 +396,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Moves to the first attribute.
+        /// Moves the InnerReader to the first attribute.
         /// </summary>
         /// <returns>Returns true if the reader is positioned at a attribute else false.</returns>
         /// <remarks>When returning false the reader position will not be changed.</remarks>
@@ -393,7 +406,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Moves the reader to the next attribute.
+        /// Moves the InnerReader to the next attribute.
         /// </summary>
         /// <returns>Returns true if the reader is positioned at an attribute else false.</returns>
         /// <remarks>When returning false the reader position will not be changed.</remarks>
@@ -403,7 +416,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Reads the next node from the stream.
+        /// Reads the InnerReader's next node from the stream.
         /// </summary>
         /// <returns>true if the next node was read successfully.</returns>
         public override bool Read()
@@ -412,7 +425,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Parses the attribute value into one or more Text, EntityReference, or EndEntity nodes.
+        /// Parses the InnerReader's attribute value into one or more Text, EntityReference, or EndEntity nodes.
         /// </summary>
         /// <returns>true if there are nodes to return.false if the reader is not positioned on
         /// an attribute node when the initial call is made or if all the attribute values
@@ -423,7 +436,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Reads the content and returns the Base64 decoded binary bytes.
+        /// Reads the InnerReader's content and returns the Base64 decoded binary bytes.
         /// </summary>
         /// <param name="buffer">The buffer into which to copy the resulting text. This value cannot be null.</param>
         /// <param name="index">The offset into the buffer where to start copying the result.</param>
@@ -435,7 +448,7 @@ namespace Microsoft.IdentityModel.Xml
         }
 
         /// <summary>
-        /// Reads the content and returns the BinHex decoded binary bytes.
+        /// Reads the InnerReader's content and returns the BinHex decoded binary bytes.
         /// </summary>
         /// <param name="buffer">The buffer into which to copy the resulting text. This value cannot be null.</param>
         /// <param name="index">The offset into the buffer where to start copying the result.</param>
@@ -446,13 +459,16 @@ namespace Microsoft.IdentityModel.Xml
             return _innerReader.ReadContentAsBinHex(buffer, index, count);
         }
 
+        /// <summary>
+        /// Resolves the InnerReader's EntityReference nodes.
+        /// </summary>
         public override void ResolveEntity()
         {
             _innerReader.ResolveEntity();
         }
 
         /// <summary>
-        /// Reads large streams of text embedded in an XML document.
+        /// Reads large streams of text embedded in an XML document from the InnerReader.
         /// </summary>
         /// <param name="buffer">The array of characters that serves as the buffer to which the text contents
         /// are written. This value cannot be null.</param>
