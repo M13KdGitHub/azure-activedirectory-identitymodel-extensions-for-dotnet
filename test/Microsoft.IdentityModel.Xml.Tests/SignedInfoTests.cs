@@ -27,8 +27,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
 using Microsoft.IdentityModel.Tests;
 using Xunit;
 
@@ -123,18 +121,6 @@ namespace Microsoft.IdentityModel.Xml.Tests
                     },
                     new SignedInfoTheoryData
                     {
-                        ExpectedException = new ExpectedException(typeof(XmlReadException), "IDX21011:"),
-                        TestId = nameof(ReferenceXml.SignedInfoCanonicalizationMethodMissing),
-                        Xml = ReferenceXml.SignedInfoCanonicalizationMethodMissing.Xml,
-                    },
-                    new SignedInfoTheoryData
-                    {
-                        ExpectedException = new ExpectedException(typeof(XmlReadException), "IDX21011: Unable to read XML. Expecting XmlReader to be at ns.element: 'http://www.w3.org/2000/09/xmldsig#.Reference'"),
-                        TestId = nameof(ReferenceXml.SignedInfoReferenceMissing),
-                        Xml = ReferenceXml.SignedInfoReferenceMissing.Xml
-                    },
-                    new SignedInfoTheoryData
-                    {
                         SignedInfo = ReferenceXml.SignedInfoTransformsMissing.SignedInfo,
                         TestId = nameof(ReferenceXml.SignedInfoTransformsMissing),
                         Xml = ReferenceXml.SignedInfoTransformsMissing.Xml,
@@ -144,6 +130,18 @@ namespace Microsoft.IdentityModel.Xml.Tests
                         SignedInfo = ReferenceXml.SignedInfoNoTransforms.SignedInfo,
                         TestId = nameof(ReferenceXml.SignedInfoNoTransforms),
                         Xml = ReferenceXml.SignedInfoNoTransforms.Xml,
+                    },
+                    new SignedInfoTheoryData
+                    {
+                        ExpectedException = new ExpectedException(typeof(XmlReadException), "IDX21011:"),
+                        TestId = nameof(ReferenceXml.SignedInfoCanonicalizationMethodMissing),
+                        Xml = ReferenceXml.SignedInfoCanonicalizationMethodMissing.Xml,
+                    },
+                    new SignedInfoTheoryData
+                    {
+                        ExpectedException = new ExpectedException(typeof(XmlReadException), "IDX21011: Unable to read XML. Expecting XmlReader to be at ns.element: 'http://www.w3.org/2000/09/xmldsig#.Reference'"),
+                        TestId = nameof(ReferenceXml.SignedInfoReferenceMissing),
+                        Xml = ReferenceXml.SignedInfoReferenceMissing.Xml
                     },
                     new SignedInfoTheoryData
                     {
