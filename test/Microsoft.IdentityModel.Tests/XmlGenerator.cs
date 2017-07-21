@@ -421,5 +421,15 @@ namespace Microsoft.IdentityModel.Tests
         {
             get => "<SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST\" Location=\"https://login.microsoftonline.com/common/saml2\" />";
         }
+
+        public static string TransformTemplate
+        {
+            get => "<{0}Transform {1} = \"{2}\" {3} />";
+        }
+
+        public static string TransformXml(string prefix, string attributeName, string algorithm, string ns )
+        {
+            return string.Format(TransformTemplate, prefix, attributeName, algorithm, ns);
+        }
     }
 }

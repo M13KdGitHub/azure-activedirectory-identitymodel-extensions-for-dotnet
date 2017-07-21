@@ -36,6 +36,9 @@ namespace Microsoft.IdentityModel.Tests
     {
         public static XmlDictionaryReader CreateDictionaryReader(string xml)
         {
+            if (string.IsNullOrEmpty(xml))
+                return null;
+
             return XmlDictionaryReader.CreateDictionaryReader(XmlReader.Create(new StringReader(xml)));
         }
 

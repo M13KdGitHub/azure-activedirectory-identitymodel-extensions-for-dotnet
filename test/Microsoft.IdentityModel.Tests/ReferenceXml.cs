@@ -259,8 +259,57 @@ namespace Microsoft.IdentityModel.Tests
 
         #endregion
 
-        #region KeyInfo
+        #region EnvelopedSignatureTransform
+        public static EnvelopeSignatureTransformTestSet EnvelopedSignatureTransform_AlgorithmNotEnveloped
+        {
+            get => new EnvelopeSignatureTransformTestSet
+            {
+                Xml = XmlGenerator.TransformXml("", "Algorithm", Guid.NewGuid().ToString(), "")
+            };
+        }
+        public static EnvelopeSignatureTransformTestSet EnvelopedSignatureTransform_AlgorithmMissing
+        {
+            get => new EnvelopeSignatureTransformTestSet
+            {
+                Xml = XmlGenerator.TransformXml("", "_Algorithm", XmlSignatureConstants.Algorithms.EnvelopedSignature, "")
+            };
+        }
 
+        public static EnvelopeSignatureTransformTestSet EnvelopedSignatureTransform_AlgorithmNull
+        {
+            get => new EnvelopeSignatureTransformTestSet
+            {
+                Xml = XmlGenerator.TransformXml("", "Algorithm", null, "")
+            };
+        }
+
+        public static EnvelopeSignatureTransformTestSet EnvelopedSignatureTransform_Valid_WithPrefix
+        {
+            get => new EnvelopeSignatureTransformTestSet
+            {
+                EnvelopedSignatureTransform = new EnvelopedSignatureTransform
+                {
+                    Algorithm = XmlSignatureConstants.Algorithms.EnvelopedSignature,
+                    Prefix = XmlSignatureConstants.Prefix
+                },
+                Xml = XmlGenerator.TransformXml(XmlSignatureConstants.Prefix+":", "Algorithm", XmlSignatureConstants.Algorithms.EnvelopedSignature, "xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\"")
+            };
+        }
+        public static EnvelopeSignatureTransformTestSet EnvelopedSignatureTransform_Valid_WithOutPrefix
+        {
+            get => new EnvelopeSignatureTransformTestSet
+            {
+                EnvelopedSignatureTransform = new EnvelopedSignatureTransform
+                {
+                    Algorithm = XmlSignatureConstants.Algorithms.EnvelopedSignature,
+                    Prefix = ""
+                },
+                Xml = XmlGenerator.TransformXml("", "Algorithm", XmlSignatureConstants.Algorithms.EnvelopedSignature, "xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\"")
+            };
+        }
+        #endregion
+
+        #region KeyInfo
         public static KeyInfoTestSet KeyInfoWrongElement
         {
             get

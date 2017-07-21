@@ -35,14 +35,13 @@ namespace Microsoft.IdentityModel.Xml
 {
     public sealed class EnvelopedSignatureTransform : Transform
     {
-        private string _prefix = Prefix;
-
         /// <summary>
         /// Creates an EnvelopedSignatureTransform
         /// </summary>
         public EnvelopedSignatureTransform()
         {
             Algorithm = Algorithms.EnvelopedSignature;
+            Prefix = XmlSignatureConstants.Prefix;
         }
 
         /// <summary>
@@ -65,6 +64,7 @@ namespace Microsoft.IdentityModel.Xml
         /// <param name="reader">not applicable</param>
         /// <param name="hash">not applicable</param>
         /// <returns></returns>
+        /// <exception cref="XmlReadException">is always thrown.</exception>
         public override byte[] ProcessAndDigest(XmlTokenStreamReader reader, HashAlgorithm hash)
         {
             throw LogReadException(LogMessages.IDX21104);
@@ -74,19 +74,27 @@ namespace Microsoft.IdentityModel.Xml
         /// Reads and populates a <see cref="EnvelopedSignatureTransform"/> from XML
         /// </summary>
         /// <param name="reader"><see cref="XmlReader"/>positioned at a TransForm element.</param>
+        /// <exception cref="XmlReadException">the 'algorithm' attribute of the transform element != <see cref="Algorithms.EnvelopedSignature"/></exception>
         public override void ReadFrom(XmlReader reader)
         {
+            if (reader == null)
+                throw LogArgumentNullException(nameof(reader));
+
             reader.MoveToContent();
-            string algorithm = XmlUtil.ReadEmptyElementAndRequiredAttribute(reader,
-                Elements.Transform, Namespace, Attributes.Algorithm, out _prefix);
+            Prefix = reader.Prefix;
+            string algorithm = XmlUtil.ReadEmptyElementAndRequiredAttribute(reader, Elements.Transform, Namespace, Attributes.Algorithm);
 
             if (algorithm != Algorithm)
                 throw LogReadException(LogMessages.IDX21105, Algorithm, algorithm);
         }
 
+        /// <summary>
+        /// Writes this transform using a <see cref="XmlWriter"/>.
+        /// </summary>
+        /// <param name="writer">the <see cref="XmlWriter"/>to use.</param>
         public override void WriteTo(XmlWriter writer)
         {
-            writer.WriteStartElement(_prefix, Elements.Transform, Namespace);
+            writer.WriteStartElement(Prefix, Elements.Transform, Namespace);
             writer.WriteAttributeString(Attributes.Algorithm, null, Algorithm);
             writer.WriteEndElement();
         }

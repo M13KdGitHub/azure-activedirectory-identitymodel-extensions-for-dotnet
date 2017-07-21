@@ -32,7 +32,17 @@ namespace Microsoft.IdentityModel.Xml
 {
     public abstract class Transform
     {
-        public string Algorithm { get; protected set; }
+        public string Algorithm
+        {
+            get;
+            set;
+        }
+
+        public string Prefix
+        {
+            get;
+            set;
+        }
 
         public abstract XmlTokenStreamReader Process(XmlTokenStreamReader input);
 

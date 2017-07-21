@@ -60,6 +60,7 @@ namespace Microsoft.IdentityModel.Xml
         internal const string IDX21104 = "IDX21104: EnvelopedSignatureTransform does not support Process and Digest.";
         internal const string IDX21105 = "IDX21105: EnvelopedSignatureTransform must specify algorithm: '{0}', found: '{1}'.";
         internal const string IDX21106 = "IDX21106: ExclusiveCanonicalizationTransform must be the last transform.";
+        internal const string IDX21107 = "IDX21107: Inclusive namespaces is not supported.";
 
         // signature validation
         internal const string IDX21200 = "IDX21200: The 'Signature' did not validate.";

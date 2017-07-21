@@ -102,22 +102,18 @@ namespace Microsoft.IdentityModel.Xml
             return LogExceptionMessage(new XmlReadException(FormatInvariant(LogMessages.IDX21012, reading, reader.LocalName)));
         }
 
-        internal static string ReadEmptyElementAndRequiredAttribute(XmlReader reader, string name, string namespaceUri, string attributeName,
-            out string prefix)
+        internal static string ReadEmptyElementAndRequiredAttribute(XmlReader reader, string name, string namespaceUri, string attributeName)
         {
-            prefix = reader.Prefix;
             bool isEmptyElement = reader.IsEmptyElement;
             string value = reader.GetAttribute(attributeName, null);
-            if (value == null)
-            {
-                OnRequiredAttributeMissing(attributeName, null);
-            }
+            if (string.IsNullOrEmpty(value))
+                throw OnRequiredAttributeMissing(attributeName, null);
+
             reader.Read();
 
             if (!isEmptyElement)
-            {
                 reader.ReadEndElement();
-            }
+
             return value;
         }
 

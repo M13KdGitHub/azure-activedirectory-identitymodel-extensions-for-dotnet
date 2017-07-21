@@ -414,6 +414,8 @@ namespace Microsoft.IdentityModel.Tests
                 return AreSamlEvidencesEqual(t1 as SamlEvidence, t2 as SamlEvidence, context);
             else if (t1 is SamlStatement)
                 return AreSamlStatementEqual(t1 as SamlStatement, t2 as SamlStatement, context);
+            else if (t1 is Transform)
+                return AreTransformsEqual(t1 as Transform, t2 as Transform, context);
             else
             {
                 var localContext = new CompareContext(context);
@@ -881,10 +883,20 @@ namespace Microsoft.IdentityModel.Tests
         public static bool AreTokenValidationParametersEqual(TokenValidationParameters validationParameters1, TokenValidationParameters validationParameters2, CompareContext context)
         {
             var localContext = new CompareContext(context);
-            if (!ContinueCheckingEquality(validationParameters1, validationParameters1, localContext))
+            if (!ContinueCheckingEquality(validationParameters1, validationParameters2, localContext))
                 return context.Merge(localContext);
 
             CompareAllPublicProperties(validationParameters1, validationParameters2, localContext);
+            return context.Merge(localContext);
+        }
+
+        public static bool AreTransformsEqual(Transform transform1, Transform transform2, CompareContext context)
+        {
+            var localContext = new CompareContext(context);
+            if (!ContinueCheckingEquality(transform1, transform2, localContext))
+                return context.Merge(localContext);
+
+            CompareAllPublicProperties(transform1, transform2, localContext);
             return context.Merge(localContext);
         }
 
@@ -1006,7 +1018,7 @@ namespace Microsoft.IdentityModel.Tests
             var localContext = new CompareContext(context);
 
             // public instance properties
-            PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             // Touch each public property
             foreach (PropertyInfo propertyInfo in propertyInfos)
@@ -1014,6 +1026,10 @@ namespace Microsoft.IdentityModel.Tests
                 var propertyContext = new CompareContext(context);
                 try
                 {
+                    // this is true if type is System.Object, no reason to go lower.
+                    if (propertyInfo.PropertyType.BaseType == null)
+                        continue;
+
                     if (type == typeof(Claim) && context.IgnoreSubject && propertyInfo.Name == "Subject")
                         continue;
 

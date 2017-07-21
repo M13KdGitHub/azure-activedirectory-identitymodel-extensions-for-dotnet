@@ -36,11 +36,8 @@ namespace Microsoft.IdentityModel.Xml
     /// Canonicalization algorithms are found in &lt;SignedInfo> and &lt;Transform>.
     /// The element name can be: CanonicalizationMethod or Transform the actions are the same.
     /// </summary>
-    public class ExclusiveCanonicalizationTransform : Transform
+    public sealed class ExclusiveCanonicalizationTransform : Transform
     {
-        private string _elementName;
-        private string _prefix = XmlSignatureConstants.Prefix;
-
         public ExclusiveCanonicalizationTransform()
             : this(false)
         {
@@ -53,9 +50,16 @@ namespace Microsoft.IdentityModel.Xml
 
         public ExclusiveCanonicalizationTransform(bool isCanonicalizationMethod, bool includeComments)
         {
-            _elementName = isCanonicalizationMethod ? XmlSignatureConstants.Elements.CanonicalizationMethod : XmlSignatureConstants.Elements.Transform;
+            ElementName = isCanonicalizationMethod ? XmlSignatureConstants.Elements.CanonicalizationMethod : XmlSignatureConstants.Elements.Transform;
             IncludeComments = includeComments;
             Algorithm = includeComments ? XmlSignatureConstants.ExclusiveC14nWithComments : XmlSignatureConstants.ExclusiveC14n;
+            Prefix = XmlSignatureConstants.Prefix;
+        }
+
+        public string ElementName
+        {
+            get;
+            private set;
         }
 
         public bool IncludeComments
@@ -107,9 +111,9 @@ namespace Microsoft.IdentityModel.Xml
 
         public override void ReadFrom(XmlReader reader)
         {
-            XmlUtil.CheckReaderOnEntry(reader, _elementName, XmlSignatureConstants.Namespace);
+            XmlUtil.CheckReaderOnEntry(reader, ElementName, XmlSignatureConstants.Namespace);
 
-            _prefix = reader.Prefix;
+            Prefix = reader.Prefix;
             bool isEmptyElement = reader.IsEmptyElement;
             Algorithm = reader.GetAttribute(XmlSignatureConstants.Attributes.Algorithm, null);
             if (string.IsNullOrEmpty(Algorithm))
@@ -120,20 +124,14 @@ namespace Microsoft.IdentityModel.Xml
             else if (Algorithm == XmlSignatureConstants.ExclusiveC14n)
                 IncludeComments = false;
             else
-                XmlUtil.LogReadException(LogMessages.IDX21100, Algorithm, XmlSignatureConstants.ExclusiveC14nWithComments, XmlSignatureConstants.ExclusiveC14n);
+                throw XmlUtil.LogReadException(LogMessages.IDX21100, Algorithm, XmlSignatureConstants.ExclusiveC14nWithComments, XmlSignatureConstants.ExclusiveC14n);
 
             reader.Read();
             reader.MoveToContent();
             if (!isEmptyElement)
             {
-                // TODO - we need to throw not supported Inclusive Prefix's
                 if (reader.IsStartElement(XmlSignatureConstants.ExclusiveC14nInclusiveNamespaces, XmlSignatureConstants.ExclusiveC14n))
-                {
-                    bool emptyElement = reader.IsEmptyElement;
-                    reader.Read();
-                    if (!emptyElement)
-                        reader.ReadEndElement();
-                }
+                    throw XmlUtil.LogReadException(LogMessages.IDX21107);
 
                 // </Transform>
                 reader.MoveToContent();
@@ -143,7 +141,7 @@ namespace Microsoft.IdentityModel.Xml
 
         public override void WriteTo(XmlWriter writer)
         {
-            writer.WriteStartElement(_prefix, _elementName, XmlSignatureConstants.Namespace);
+            writer.WriteStartElement(Prefix, ElementName, XmlSignatureConstants.Namespace);
             writer.WriteAttributeString(XmlSignatureConstants.Attributes.Algorithm, null, Algorithm);
             writer.WriteEndElement();
         }

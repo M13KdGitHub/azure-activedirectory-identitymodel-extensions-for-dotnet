@@ -100,6 +100,13 @@ namespace Microsoft.IdentityModel.Tests
     }
 #endregion
 
+    public class EnvelopeSignatureTransformTestSet
+    {
+        public string Xml { get; set; }
+
+        public EnvelopedSignatureTransform EnvelopedSignatureTransform { get; set; }
+    }
+
     public class KeyInfoTestSet
     {
         public string Xml { get; set; }
